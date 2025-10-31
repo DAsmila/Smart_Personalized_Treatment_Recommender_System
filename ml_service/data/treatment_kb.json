@@ -1,0 +1,32 @@
+{
+  "diabetes": {
+    "recommendations": [
+      "Maintain a balanced diet rich in vegetables and whole grains.",
+      "Exercise at least 30 minutes daily.",
+      "Monitor your blood glucose regularly.",
+      "Avoid sugary drinks and refined carbs.",
+      "Consult an endocrinologist for personalized treatment."
+    ],
+    "consult": "Consult an endocrinologist for further evaluation."
+  },
+  "heart": {
+    "recommendations": [
+      "Reduce saturated fats and cholesterol in your diet.",
+      "Avoid smoking and limit alcohol consumption.",
+      "Manage stress through yoga or meditation.",
+      "Exercise 5 times a week for 30 minutes.",
+      "Consult a cardiologist for cardiac evaluation."
+    ],
+    "consult": "Consult a cardiologist for heart health management."
+  },
+  "cancer": {
+    "recommendations": [
+      "Maintain a healthy body weight.",
+      "Eat a diet high in fruits and vegetables.",
+      "Avoid tobacco and limit alcohol use.",
+      "Schedule regular cancer screenings.",
+      "Consult an oncologist for follow-up care."
+    ],
+    "consult": "Consult an oncologist for further assessment."
+  }
+}

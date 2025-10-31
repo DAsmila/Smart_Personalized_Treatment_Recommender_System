@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Predict Diabetes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    label { display: block; margin-top: 10px; }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 10px;
+      background: #0078ff;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 15px;
+      padding: 10px;
+      background: #eaf7ea;
+      border: 1px solid #a4d4a4;
+      border-radius: 5px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Diabetes Prediction</h2>
+    <form id="predictForm">
+      <label>Age: <input type="number" id="age" required></label>
+      <label>Glucose: <input type="number" id="glucose" required></label>
+      <label>BMI: <input type="number" id="bmi" required></label>
+      <label>Insulin: <input type="number" id="insulin" required></label>
+      <label>Pregnancies: <input type="number" id="pregnancies" required></label>
+      <label>Blood Pressure: <input type="number" id="bloodpressure" required></label>
+      <button type="submit">Predict</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    document.getElementById("predictForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      console.log("✅ Predict button clicked!");
+
+      const data = {
+        age: parseFloat(document.getElementById("age").value),
+        glucose: parseFloat(document.getElementById("glucose").value),
+        bmi: parseFloat(document.getElementById("bmi").value),
+        insulin: parseFloat(document.getElementById("insulin").value),
+        pregnancies: parseFloat(document.getElementById("pregnancies").value),
+        bloodpressure: parseFloat(document.getElementById("bloodpressure").value),
+      };
+
+      console.log("🔹 Sending to backend:", data);
+
+      try {
+        const response = await fetch("http://localhost:4000/api/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("✅ Backend responded:", result);
+
+        const resultDiv = document.getElementById("result");
+        if (result.success) {
+          resultDiv.style.display = "block";
+          resultDiv.innerHTML = `
+            <strong>Prediction:</strong> ${result.prediction}<br>
+            <strong>Probability:</strong> ${(result.probability * 100).toFixed(2)}%<br>
+            <strong>Recommendations:</strong>
+            <ul>${result.recommendations.map(r => `<li>${r.title}: ${r.details}</li>`).join('')}</ul>
+          `;
+        } else {
+          resultDiv.style.display = "block";
+          resultDiv.style.background = "#fce8e6";
+          resultDiv.innerHTML = "⚠️ " + (result.message || "Prediction failed.");
+        }
+      } catch (err) {
+        console.error("❌ Error calling backend:", err);
+        alert("Error connecting to backend!");
+      }
+    });
+  </script>
+</body>
+</html>
